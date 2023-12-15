@@ -72,6 +72,7 @@
     <div class="container">
         <button class="btn" onclick="promptForCheckIn()">Отметить приход</button>
         <button class="btn" onclick="promptForCheckOut()">Отметить уход</button>
+        <button class="btn" onclick="promptForAddEmployee()">Добавить сотрудника</button>
 
         <!-- Форма для ввода ФИО сотрудника -->
         <div id="checkInForm" style="display: none;">
@@ -93,6 +94,11 @@
             <button class="btn" onclick="checkOut()">Подтвердить уход</button>
         </div>
 
+        <div id="addEmployeeForm" style="display: none;">
+            <input type="text" id="newEmployeeName" placeholder="Введите ФИО сотрудника" />
+            <button class="btn" onclick="addEmployee()">Добавить</button>
+        </div>
+
         <table id="timeLog">
             <thead>
                 <tr>
@@ -111,9 +117,11 @@
     <script>
         const checkInForm = document.getElementById('checkInForm');
         const checkOutForm = document.getElementById('checkOutForm');
+        const addEmployeeForm = document.getElementById('addEmployeeForm');
 
         let checkedInEmployees = [];
-        
+        let allEmployees = []; // Массив всех сотрудников
+
         function promptForCheckIn() {
             if (checkInForm.style.display == 'block') {
                 checkInForm.style.display = 'none';
@@ -122,6 +130,9 @@
             else {
                 if (checkOutForm.style.display == 'block') {
                     checkOutForm.style.display = 'none';
+                }
+                if (addEmployeeForm.style.display == 'block') {
+                    addEmployeeForm.style.display = 'none';
                 }
                 checkInForm.style.display = 'block';
             }
@@ -135,6 +146,9 @@
                 if (checkInForm.style.display == 'block') {
                     checkInForm.style.display = 'none';
                 }
+                if (addEmployeeForm.style.display == 'block') {
+                    addEmployeeForm.style.display = 'none';
+                }
                 const select = document.getElementById('employeeNameOut');
                 select.innerHTML = '';
 
@@ -147,6 +161,23 @@
                 });
                 checkOutForm.style.display = 'block';
             }
+        }
+
+        function promptForAddEmployee() {
+            if (addEmployeeForm.style.display == 'block') {
+                addEmployeeForm.style.display = 'none';
+            }
+            else {
+                if (checkOutForm.style.display == 'block') {
+                    checkOutForm.style.display = 'none';
+                }
+                if (checkInForm.style.display == 'block') {
+                    checkInForm.style.display = 'none';
+                }
+                addEmployeeForm.style.display = 'block';
+            }
+
+            addEmployeeForm.style.display = 'block';
         }
 
         function checkIn() {
@@ -187,6 +218,53 @@
             const index = checkedInEmployees.indexOf(employeeNameOut);
             if (index > -1) {
                 checkedInEmployees.splice(index, 1);
+            }
+        }
+
+        function addEmployee() {
+            const newEmployeeName = document.getElementById('newEmployeeName').value.trim();
+            if (newEmployeeName && allEmployees.indexOf(newEmployeeName) === -1) {
+                allEmployees.push(newEmployeeName);
+                // Очищаем поле ввода для следующего ввода
+                document.getElementById('newEmployeeName').value = '';
+                // Скрываем форму добавления сотрудника
+                document.getElementById('addEmployeeForm').style.display = 'none';
+                updateEmployeeList();
+            } else {
+                alert('Введите уникальное ФИО сотрудника.');
+            }
+        }
+        function updateEmployeeList() {
+            // Обновляем список сотрудников в форме прихода
+            const select = document.getElementById('employeeName');
+            select.innerHTML = '';
+            allEmployees.forEach(function (employee) {
+                const option = document.createElement('option');
+                option.value = employee;
+                option.textContent = employee;
+                select.appendChild(option);
+            });
+        }
+
+        // Функция удаления сотрудника
+        function removeEmployee(employeeName) {
+            const index = allEmployees.indexOf(employeeName);
+            if (index > -1) {
+                allEmployees.splice(index, 1);
+                updateEmployeeList();
+                // Также удаляем из списка отметившихся сотрудников
+                const checkedInIndex = checkedInEmployees.indexOf(employeeName);
+                if (checkedInIndex > -1) {
+                    checkedInEmployees.splice(checkedInIndex, 1);
+                }
+                // Обновляем таблицу (удаляем строку сотрудника)
+                const timeLog = document.getElementById('timeLog');
+                const rows = timeLog.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (row.cells[0] && row.cells[0].textContent === employeeName) {
+                        timeLog.removeChild(row);
+                    }
+                });
             }
         }
     </script>
