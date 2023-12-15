@@ -109,13 +109,12 @@
     </div>
 
     <script>
+        const checkInForm = document.getElementById('checkInForm');
+        const checkOutForm = document.getElementById('checkOutForm');
+
         let checkedInEmployees = [];
-
-
+        
         function promptForCheckIn() {
-            var checkInForm = document.getElementById('checkInForm');
-            var checkOutForm = document.getElementById('checkOutForm');
-
             if (checkInForm.style.display == 'block') {
                 checkInForm.style.display = 'none';
                 return;
@@ -129,10 +128,6 @@
         }
 
         function promptForCheckOut() {
-            var checkInForm = document.getElementById('checkInForm');
-            var checkOutForm = document.getElementById('checkOutForm');
-
-
             if (checkOutForm.style.display == 'block') {
                 checkOutForm.style.display = 'none';
             }
@@ -167,7 +162,7 @@
             checkedInEmployees.push(employeeName);
 
             // Скрываем форму
-            document.getElementById('checkInForm').style.display = 'none';
+            checkInForm.style.display = 'none';
         }
 
         function checkOut() {
@@ -186,7 +181,7 @@
             }
 
             // Скрыть форму для ухода
-            document.getElementById('checkOutForm').style.display = 'none';
+            checkOutForm.style.display = 'none';
 
             // Удаляем сотрудника из массива checkedInEmployees
             const index = checkedInEmployees.indexOf(employeeNameOut);
