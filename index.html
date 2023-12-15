@@ -73,30 +73,37 @@
         <button class="btn" onclick="promptForCheckIn()">Отметить приход</button>
         <button class="btn" onclick="promptForCheckOut()">Отметить уход</button>
         <button class="btn" onclick="promptForAddEmployee()">Добавить сотрудника</button>
+        <button class="btn" onclick="promptForRemoveEmployee()">Удалить сотрудника</button>
 
-        <!-- Форма для ввода ФИО сотрудника -->
+        <!-- Форма для отметки прихода сотрудника -->
         <div id="checkInForm" style="display: none;">
             <label for="employeeName">Выберите сотрудника:</label>
             <select id="employeeName">
-                <!-- Здесь должен быть список сотрудников -->
-                <option value="Иванов Иван Иванович">Иванов Иван Иванович</option>
-                <option value="Петров Петр Петрович">Петров Петр Петрович</option>
-                <!-- и так далее -->
+                <!-- Здесь будет список сотрудников-->
             </select>
             <button class="btn" onclick="checkIn()">Подтвердить</button>
         </div>
 
+        <!-- Форма для отметки ухода сотрудника -->
         <div id="checkOutForm" style="display: none;">
             <label for="employeeNameOut">Выберите сотрудника:</label>
             <select id="employeeNameOut">
-                <!-- Здесь будет список сотрудников, которые отметили приход -->
+                <!-- Здесь будет список сотрудников, которым отметили приход -->
             </select>
             <button class="btn" onclick="checkOut()">Подтвердить уход</button>
         </div>
 
+        <!-- Форма для добавления сотрудника -->
         <div id="addEmployeeForm" style="display: none;">
             <input type="text" id="newEmployeeName" placeholder="Введите ФИО сотрудника" />
             <button class="btn" onclick="addEmployee()">Добавить</button>
+        </div>
+
+        <!-- Форма для удаления сотрудника -->
+        <div id="removeEmployeeForm" style="display: none;">
+            <label for="employeeToRemove">Выберите сотрудника для удаления:</label>
+            <select id="employeeToRemove"></select>
+            <button class="btn" onclick="removeEmployee()">Удалить</button>
         </div>
 
         <table id="timeLog">
@@ -118,7 +125,7 @@
         const checkInForm = document.getElementById('checkInForm');
         const checkOutForm = document.getElementById('checkOutForm');
         const addEmployeeForm = document.getElementById('addEmployeeForm');
-
+        const removeEmployeeForm = document.getElementById('removeEmployeeForm')
         let checkedInEmployees = [];
         let allEmployees = []; // Массив всех сотрудников
 
@@ -134,6 +141,9 @@
                 if (addEmployeeForm.style.display == 'block') {
                     addEmployeeForm.style.display = 'none';
                 }
+                if (removeEmployeeForm.style.display == 'block') {
+                    removeEmployeeForm.style.display = 'none';
+                }
                 checkInForm.style.display = 'block';
             }
         }
@@ -148,6 +158,9 @@
                 }
                 if (addEmployeeForm.style.display == 'block') {
                     addEmployeeForm.style.display = 'none';
+                }
+                if (removeEmployeeForm.style.display == 'block') {
+                    removeEmployeeForm.style.display = 'none';
                 }
                 const select = document.getElementById('employeeNameOut');
                 select.innerHTML = '';
@@ -174,10 +187,39 @@
                 if (checkInForm.style.display == 'block') {
                     checkInForm.style.display = 'none';
                 }
+                if (removeEmployeeForm.style.display == 'block') {
+                    removeEmployeeForm.style.display = 'none';
+                }
                 addEmployeeForm.style.display = 'block';
-            }
+            }            
+        }
 
-            addEmployeeForm.style.display = 'block';
+        function promptForRemoveEmployee() {
+            if (removeEmployeeForm.style.display == 'block') {
+                removeEmployeeForm.style.display = 'none';
+            }
+            else {
+                if (checkOutForm.style.display == 'block') {
+                    checkOutForm.style.display = 'none';
+                }
+                if (checkInForm.style.display == 'block') {
+                    checkInForm.style.display = 'none';
+                }
+                if (addEmployeeForm.style.display == 'block') {
+                    addEmployeeForm.style.display = 'none';
+                }
+                const select = document.getElementById('employeeToRemove');
+                select.innerHTML = '';
+
+                // Заполняем список сотрудников
+                allEmployees.forEach(function (employee) {
+                    const option = document.createElement('option');
+                    option.value = employee;
+                    option.textContent = employee;
+                    select.appendChild(option);
+                });
+                removeEmployeeForm.style.display = 'block';
+            }
         }
 
         function checkIn() {
@@ -234,6 +276,7 @@
                 alert('Введите уникальное ФИО сотрудника.');
             }
         }
+
         function updateEmployeeList() {
             // Обновляем список сотрудников в форме прихода
             const select = document.getElementById('employeeName');
@@ -246,17 +289,15 @@
             });
         }
 
-        // Функция удаления сотрудника
-        function removeEmployee(employeeName) {
+        function removeEmployee() {
+            const select = document.getElementById('employeeToRemove');
+            const employeeName = select.value;
             const index = allEmployees.indexOf(employeeName);
             if (index > -1) {
                 allEmployees.splice(index, 1);
+                checkedInEmployees = checkedInEmployees.filter(e => e !== employeeName);
                 updateEmployeeList();
-                // Также удаляем из списка отметившихся сотрудников
-                const checkedInIndex = checkedInEmployees.indexOf(employeeName);
-                if (checkedInIndex > -1) {
-                    checkedInEmployees.splice(checkedInIndex, 1);
-                }
+
                 // Обновляем таблицу (удаляем строку сотрудника)
                 const timeLog = document.getElementById('timeLog');
                 const rows = timeLog.querySelectorAll('tr');
@@ -265,6 +306,9 @@
                         timeLog.removeChild(row);
                     }
                 });
+
+                // Скрываем форму удаления сотрудника
+                document.getElementById('removeEmployeeForm').style.display = 'none';
             }
         }
     </script>
