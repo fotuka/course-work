@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система учета рабочего времени сотрудников</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Система учета рабочего времени сотрудников</h1>
+    </header>
+
+    <div class="container">
+        <button class="btn" onclick="promptForCheckIn()">Отметить приход</button>
+        <button class="btn" onclick="promptForCheckOut()">Отметить уход</button>
+
+        <!-- Форма для ввода ФИО сотрудника -->
+        <div id="checkInForm" style="display: none;">
+            <label for="employeeName">Выберите сотрудника:</label>
+            <select id="employeeName">
+                <!-- Здесь должен быть список сотрудников -->
+                <option value="Иванов Иван Иванович">Иванов Иван Иванович</option>
+                <option value="Петров Петр Петрович">Петров Петр Петрович</option>
+                <!-- и так далее -->
+            </select>
+            <button class="btn" onclick="checkIn()">Подтвердить</button>
+        </div>
+
+        <div id="checkOutForm" style="display: none;">
+            <label for="employeeNameOut">Выберите сотрудника:</label>
+            <select id="employeeNameOut">
+                <!-- Здесь будет список сотрудников, которые отметили приход -->
+            </select>
+            <button class="btn" onclick="checkOut()">Подтвердить уход</button>
+        </div>
+
+        <table id="timeLog">
+            <thead>
+                <tr>
+                    <th>Сотрудник</th>
+                    <th>Дата</th>
+                    <th>Время прихода</th>
+                    <th>Время ухода</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Здесь будут отображаться записи -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let checkedInEmployees = [];
+
+
+        function promptForCheckIn() {
+            if (document.getElementById('checkInForm').style.display == 'block')
+            {
+                document.getElementById('checkInForm').style.display == 'none'
+            }
+            else
+            {
+                document.getElementById('checkInForm').style.display = 'block';
+            }                        
+        }
+
+        function promptForCheckOut() {            
+            if (document.getElementById('checkOutForm').style.display = 'block')
+            {
+                document.getElementById('checkOutForm').style.display = 'none';
+            }
+            else
+            {
+                document.getElementById('checkOutForm').style.display = 'block';
+            }  
+
+            const select = document.getElementById('employeeNameOut');
+            select.innerHTML = '';
+            // Заполняем список только теми сотрудниками, которые отметили приход
+            checkedInEmployees.forEach(function (employee) {
+                const option = document.createElement('option');
+                option.value = employee;
+                option.textContent = employee;
+                select.appendChild(option);
+            });            
+        }
+
+        function checkIn() {
+            var employeeName = document.getElementById('employeeName').value;
+            var timeLog = document.getElementById('timeLog');
+            var currentTime = new Date().toLocaleTimeString();
+            var currentDate = new Date().toLocaleDateString();
+
+            // Добавляем запись в таблицу
+            timeLog.innerHTML += '<tr><td>' + employeeName + '</td><td>' + currentDate + '</td><td>' + currentTime + '</td><td>---</td></tr>';
+
+            // Добавляем запись в массив
+            checkedInEmployees.push(employeeName);
+
+            // Скрываем форму
+            document.getElementById('checkInForm').style.display = 'none';
+        }
+
+        function checkOut() {
+            const employeeNameOut = document.getElementById('employeeNameOut').value;
+            const timeLog = document.getElementById('timeLog');
+            const currentTime = new Date().toLocaleTimeString();
+
+            // Находим строку сотрудника и добавляем время ухода
+            const rows = timeLog.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.cells[0].textContent === employeeNameOut) {
+                    row.cells[3].textContent = currentTime;
+                    break;
+                }
+            }
+
+            // Скрыть форму для ухода
+            document.getElementById('checkOutForm').style.display = 'none';
+
+            // Удаляем сотрудника из массива checkedInEmployees
+            const index = checkedInEmployees.indexOf(employeeNameOut);
+            if (index > -1) {
+                checkedInEmployees.splice(index, 1);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
