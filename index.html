@@ -113,23 +113,45 @@
 
 
         function promptForCheckIn() {
-            document.getElementById('checkInForm').style.display = 'block';
-            
+            var checkInForm = document.getElementById('checkInForm');
+            var checkOutForm = document.getElementById('checkOutForm');
+
+            if (checkInForm.style.display == 'block') {
+                checkInForm.style.display = 'none';
+                return;
+            }
+            else {
+                if (checkOutForm.style.display == 'block') {
+                    checkOutForm.style.display = 'none';
+                }
+                checkInForm.style.display = 'block';
+            }
         }
 
         function promptForCheckOut() {
-            const select = document.getElementById('employeeNameOut');
-            select.innerHTML = '';
+            var checkInForm = document.getElementById('checkInForm');
+            var checkOutForm = document.getElementById('checkOutForm');
 
-            // Заполняем список только теми сотрудниками, которые отметили приход
-            checkedInEmployees.forEach(function (employee) {
-                const option = document.createElement('option');
-                option.value = employee;
-                option.textContent = employee;
-                select.appendChild(option);
-            });
 
-            document.getElementById('checkOutForm').style.display = 'block';
+            if (checkOutForm.style.display == 'block') {
+                checkOutForm.style.display = 'none';
+            }
+            else {
+                if (checkInForm.style.display == 'block') {
+                    checkInForm.style.display = 'none';
+                }
+                const select = document.getElementById('employeeNameOut');
+                select.innerHTML = '';
+
+                // Заполняем список только теми сотрудниками, которые отметили приход
+                checkedInEmployees.forEach(function (employee) {
+                    const option = document.createElement('option');
+                    option.value = employee;
+                    option.textContent = employee;
+                    select.appendChild(option);
+                });
+                checkOutForm.style.display = 'block';
+            }
         }
 
         function checkIn() {
