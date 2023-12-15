@@ -113,35 +113,23 @@
 
 
         function promptForCheckIn() {
-            if (document.getElementById('checkInForm').style.display == 'block')
-            {
-                document.getElementById('checkInForm').style.display == 'none'
-            }
-            else
-            {
-                document.getElementById('checkInForm').style.display = 'block';
-            }                        
+            document.getElementById('checkInForm').style.display = 'block';
+            
         }
 
-        function promptForCheckOut() {            
-            if (document.getElementById('checkOutForm').style.display = 'block')
-            {
-                document.getElementById('checkOutForm').style.display = 'none';
-            }
-            else
-            {
-                document.getElementById('checkOutForm').style.display = 'block';
-            }  
-
+        function promptForCheckOut() {
             const select = document.getElementById('employeeNameOut');
             select.innerHTML = '';
+
             // Заполняем список только теми сотрудниками, которые отметили приход
             checkedInEmployees.forEach(function (employee) {
                 const option = document.createElement('option');
                 option.value = employee;
                 option.textContent = employee;
                 select.appendChild(option);
-            });            
+            });
+
+            document.getElementById('checkOutForm').style.display = 'block';
         }
 
         function checkIn() {
