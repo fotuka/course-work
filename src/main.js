@@ -150,7 +150,7 @@ function checkIn() {
     var timeLog = document.getElementById('timeLog');
     var currentDateTime = new Date();
     var formattedDate = currentDateTime.getFullYear().toString() + '-' +
-        currentDateTime.getMonth().toString().padStart(2, '0') + '-' +
+        (currentDateTime.getMonth() + 1).toString().padStart(2, '0') + '-' +
         currentDateTime.getDate().toString().padStart(2, '0');
     var formattedTime = currentDateTime.getHours().toString().padStart(2, '0') + ':' +
         currentDateTime.getMinutes().toString().padStart(2, '0') + ':' +
@@ -273,14 +273,15 @@ function updateStatistics() {
     for (let i = 0; i < timeLogRows.length; i++) {
         const row = timeLogRows[i];
         const employeeName = row.cells[0].textContent;
-        const checkInTime = Date.parse(row.cells[1].textContent + 'T' + row.cells[2].textContent);
+        const checkInDate = Date.parse(row.cells[1].textContent + 'T' + row.cells[2].textContent);
         // Если работник еще не ушел, его не считаем
-        if(row.cells[3].textContent === '---')
+        // Если месяц не совпадает, то тоже не считаем
+        if(row.cells[3].textContent === '---' || new Date(checkInDate).getMonth() != new Date().getMonth())
         {
             continue;
         }
-        const checkOutTime = Date.parse(row.cells[1].textContent + 'T' + row.cells[3].textContent);
-        const currentDate = checkOutTime - checkInTime        
+        const checkOutDate = Date.parse(row.cells[1].textContent + 'T' + row.cells[3].textContent);
+        const currentDate = checkOutDate - checkInDate       
         if (!employeeDate[employeeName]) {
             employeeDate[employeeName] = 0;
         }
