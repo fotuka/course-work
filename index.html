@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 
-    <title>Система учета рабочего времени сотрудников</title>    
+    <title>Система учета рабочего времени сотрудников</title>
 </head>
 
 <body>
@@ -16,10 +16,10 @@
     </header>
 
     <div class="container">
-        <button class="btn" onclick="promptForCheckIn()">Отметить приход</button>
-        <button class="btn" onclick="promptForCheckOut()">Отметить уход</button>
-        <button class="btn" onclick="promptForAddEmployee()">Добавить сотрудника</button>
-        <button class="btn" onclick="promptForRemoveEmployee()">Удалить сотрудника</button>
+        <button id="checkInBtn" class="btn">Отметить приход</button>
+        <button id="checkOutBtn" class="btn">Отметить уход</button>
+        <button id="addEmployeeBtn" class="btn">Добавить сотрудника</button>
+        <button id="removeEmployeeBtn" class="btn">Удалить сотрудника</button>
 
         <!-- Форма для отметки прихода сотрудника -->
         <div id="checkInForm" style="display: none;">
@@ -27,7 +27,7 @@
             <select id="employeeName">
                 <!-- Здесь будет список сотрудников-->
             </select>
-            <button class="btn" onclick="checkIn()">Подтвердить</button>
+            <button id="checkInBtnInsideForm" class="btn">Подтвердить</button>
         </div>
 
         <!-- Форма для отметки ухода сотрудника -->
@@ -36,20 +36,20 @@
             <select id="employeeNameOut">
                 <!-- Здесь будет список сотрудников, которым отметили приход -->
             </select>
-            <button class="btn" onclick="checkOut()">Подтвердить уход</button>
+            <button id="checkOutBtnInsideForm" class="btn">Подтвердить уход</button>
         </div>
 
         <!-- Форма для добавления сотрудника -->
         <div id="addEmployeeForm" style="display: none;">
             <input type="text" id="newEmployeeName" placeholder="Введите ФИО сотрудника" />
-            <button class="btn" onclick="addEmployee()">Добавить</button>
+            <button id="addEmployeeBtnInsideForm" class="btn">Добавить</button>
         </div>
 
         <!-- Форма для удаления сотрудника -->
         <div id="removeEmployeeForm" style="display: none;">
             <label for="employeeToRemove">Выберите сотрудника для удаления:</label>
             <select id="employeeToRemove"></select>
-            <button class="btn" onclick="removeEmployee()">Удалить</button>
+            <button id="removeEmployeeBtnInsideForm" class="btn">Удалить</button>
         </div>
 
         <table id="timeLog">
@@ -65,6 +65,7 @@
                 <!-- Здесь будут отображаться записи -->
             </tbody>
         </table>
+        
     </div>
     <script src="src/main.js" type="module"></script>
 </body>

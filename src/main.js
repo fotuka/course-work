@@ -1,3 +1,17 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Добавление событий для основных кнопок
+    document.getElementById('checkInBtn').addEventListener('click', promptForCheckIn);
+    document.getElementById('checkOutBtn').addEventListener('click', promptForCheckOut);
+    document.getElementById('addEmployeeBtn').addEventListener('click', promptForAddEmployee);
+    document.getElementById('removeEmployeeBtn').addEventListener('click', promptForRemoveEmployee);
+
+    // Добавление событий для появляющихся кнопок 
+    document.getElementById('checkInBtnInsideForm').addEventListener('click', checkIn);
+    document.getElementById('checkOutBtnInsideForm').addEventListener('click', checkOut);
+    document.getElementById('addEmployeeBtnInsideForm').addEventListener('click', addEmployee);
+    document.getElementById('removeEmployeeBtnInsideForm').addEventListener('click', removeEmployee);
+});
+
 const checkInForm = document.getElementById('checkInForm');
 const checkOutForm = document.getElementById('checkOutForm');
 const addEmployeeForm = document.getElementById('addEmployeeForm');
