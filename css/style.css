@@ -62,7 +62,9 @@ button[id='showStatisticsBtn'] {
     float: right;
 }
 
-
+button[id='showStatisticsBtn']:hover {
+    background-color: #4280d1;
+}
 
 /* Стили для всплывающего окна */
 .modal {
