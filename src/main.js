@@ -139,7 +139,7 @@ function checkIn() {
         currentDateTime.getSeconds().toString().padStart(2, '0');
 
     const rows = timeLog.getElementsByTagName('tr');
-    for (let i = 1; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         // Проверка ушел ли сотрудник, которого нужно добавить
         if (row.cells[0].textContent === employeeName && row.cells[3].textContent === "---") {
@@ -149,7 +149,7 @@ function checkIn() {
     }
 
     // Добавляем запись в таблицу
-    timeLog.innerHTML += '<tr><td>' + employeeName + '</td><td>' + formattedDate + '</td><td>' + formattedTime + '</td><td>---</td></tr>';
+    timeLog.innerHTML = '<tr><td>' + employeeName + '</td><td>' + formattedDate + '</td><td>' + formattedTime + '</td><td>---</td></tr>' + timeLog.innerHTML;
 
     // Добавляем запись в массив
     checkedInEmployees.push(employeeName);
@@ -168,7 +168,7 @@ function checkOut() {
 
     // Находим строку сотрудника и добавляем время ухода
     const rows = timeLog.getElementsByTagName('tr');
-    for (let i = rows.length - 1; i > 0; i--) {
+    for (let i = 0; i < rows.length; i++) {
         if (rows[i].cells[0].textContent === employeeNameOut) {
             rows[i].cells[3].textContent = formattedTime;
             break;
@@ -219,7 +219,7 @@ function removeEmployee() {
     var timeLog = document.getElementById('timeLog');
 
     const rows = timeLog.getElementsByTagName('tr');
-    for (let i = 1; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         // Проверка ушел ли сотрудник, которого нужно удалить
         if (row.cells[0].textContent === employeeName && row.cells[3].textContent === "---") {
