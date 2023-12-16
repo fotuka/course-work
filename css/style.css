@@ -2,7 +2,7 @@ body {
     font-family: "Century Gothic";
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
 }
 
 .container {
@@ -13,7 +13,7 @@ body {
 
 header {
     font-family: "Century Gothic";
-    background: #333;
+    background: #526352;
     color: #fff;
     padding: 10px 0;
     text-align: center;
@@ -61,12 +61,12 @@ div[id$='Form'] {
 }
 
 button[id='showStatisticsBtn'] {
-    background-color: #5ca2fd;
+    background-color: #d66ca1;
     float: right;
 }
 
 button[id='showStatisticsBtn']:hover {
-    background-color: #4280d1;
+    background-color: #c25f90;
 }
 
 /* Стили для всплывающего окна */
