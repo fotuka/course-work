@@ -52,3 +52,7 @@ th {
 .btn:hover {
     background-color: #4cae4c;
 }
+
+div[id$='Form'] {
+    padding-top: 10px;
+  }
