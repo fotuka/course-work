@@ -130,8 +130,13 @@ function promptForRemoveEmployee() {
 function checkIn() {
     var employeeName = document.getElementById('employeeName').value;
     var timeLog = document.getElementById('timeLog');
-    var currentTime = new Date().toLocaleTimeString();
-    var currentDate = new Date().toLocaleDateString();
+    var currentDateTime = new Date();
+    var formattedDate = currentDateTime.getFullYear().toString() + '-' +
+        currentDateTime.getMonth().toString().padStart(2, '0') + '-' +
+        currentDateTime.getDate().toString().padStart(2, '0');
+    var formattedTime = currentDateTime.getHours().toString().padStart(2, '0') + ':' +
+        currentDateTime.getMinutes().toString().padStart(2, '0') + ':' +
+        currentDateTime.getSeconds().toString().padStart(2, '0');
 
     const rows = timeLog.getElementsByTagName('tr');
     for (let i = 1; i < rows.length; i++) {
@@ -144,7 +149,7 @@ function checkIn() {
     }
 
     // Добавляем запись в таблицу
-    timeLog.innerHTML += '<tr><td>' + employeeName + '</td><td>' + currentDate + '</td><td>' + currentTime + '</td><td>---</td></tr>';
+    timeLog.innerHTML += '<tr><td>' + employeeName + '</td><td>' + formattedDate + '</td><td>' + formattedTime + '</td><td>---</td></tr>';
 
     // Добавляем запись в массив
     checkedInEmployees.push(employeeName);
@@ -156,13 +161,16 @@ function checkIn() {
 function checkOut() {
     const employeeNameOut = document.getElementById('employeeNameOut').value;
     const timeLog = document.getElementById('timeLog');
-    const currentTime = new Date().toLocaleTimeString();
+    var currentDateTime = new Date();
+    var formattedTime = currentDateTime.getHours().toString().padStart(2, '0') + ':' +
+        currentDateTime.getMinutes().toString().padStart(2, '0') + ':' +
+        currentDateTime.getSeconds().toString().padStart(2, '0');
 
     // Находим строку сотрудника и добавляем время ухода
     const rows = timeLog.getElementsByTagName('tr');
     for (let i = rows.length - 1; i > 0; i--) {
         if (rows[i].cells[0].textContent === employeeNameOut) {
-            rows[i].cells[3].textContent = currentTime;
+            rows[i].cells[3].textContent = formattedTime;
             break;
         }
     }
@@ -175,6 +183,8 @@ function checkOut() {
     if (index > -1) {
         checkedInEmployees.splice(index, 1);
     }
+
+    updateStatistics();
 }
 
 function addEmployee() {
@@ -226,5 +236,47 @@ function removeEmployee() {
 
         // Скрываем форму удаления сотрудника
         removeEmployeeForm.style.display = 'none';
+    }
+}
+
+function formatTimeDuration(duration) {
+    const seconds = Math.floor((duration / 1000) % 60);
+    const minutes = Math.floor((duration / (1000 * 60)) % 60);
+    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(duration / (1000 * 60 * 60 * 24));
+    
+    return `${days} дня(ей) ${hours} часа(ов) ${minutes} минут(ы) ${seconds} секунд(ы)`;
+}
+
+function updateStatistics() {
+    const timeLogRows = document.querySelectorAll('#timeLog tbody tr');
+    const employeeDate = {};
+
+    for (let i = 0; i < timeLogRows.length; i++) {
+        const row = timeLogRows[i];
+        const employeeName = row.cells[0].textContent;
+        const checkInTime = Date.parse(row.cells[1].textContent + 'T' + row.cells[2].textContent);
+        // Если работник еще не ушел, его не считаем
+        if(row.cells[3].textContent === '---')
+        {
+            continue;
+        }
+        const checkOutTime = Date.parse(row.cells[1].textContent + 'T' + row.cells[3].textContent);
+        const currentDate = checkOutTime - checkInTime        
+        if (!employeeDate[employeeName]) {
+            employeeDate[employeeName] = 0;
+        }
+        employeeDate[employeeName] += currentDate;
+    }
+
+    // Очищаем текущие данные в таблице статистики
+    const statisticsTBody = document.querySelector('#statisticsTable tbody');
+    statisticsTBody.innerHTML = '';
+
+    // Заполняем таблицу статистики данными
+    for (const [employee, date] of Object.entries(employeeDate)) {
+        const row = statisticsTBody.insertRow();
+        row.insertCell(0).textContent = employee;
+        row.insertCell(1).textContent = formatTimeDuration(date); // Округление до двух знаков после запятой
     }
 }
