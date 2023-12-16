@@ -55,4 +55,59 @@ th {
 
 div[id$='Form'] {
     padding-top: 10px;
-  }
+}
+
+button[id='showStatisticsBtn'] {
+    background-color: #5ca2fd;
+    float: right;
+}
+
+
+
+/* Стили для всплывающего окна */
+.modal {
+    display: none;
+    /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1;
+    /* Сидит над другими элементами */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* Включить прокрутку, если нужно */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Цвет фона */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% сверху и центрировано по горизонтали */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Можно изменить или сделать адаптивным */
+    max-width: 600px;
+    /* Максимальная ширина */
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Стили для списка статистики */
+#statisticsList {
+    margin-top: 20px;
+}

@@ -5,12 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-
     <title>Система учета рабочего времени сотрудников</title>
 </head>
 
 <body>
-
     <header>
         <h1>Система учета рабочего времени сотрудников</h1>
     </header>
@@ -20,6 +18,7 @@
         <button id="checkOutBtn" class="btn">Отметить уход</button>
         <button id="addEmployeeBtn" class="btn">Добавить сотрудника</button>
         <button id="removeEmployeeBtn" class="btn">Удалить сотрудника</button>
+        <button id="showStatisticsBtn" class="btn">Показать статистику</button>
 
         <!-- Форма для отметки прихода сотрудника -->
         <div id="checkInForm" style="display: none;">
@@ -52,6 +51,28 @@
             <button id="removeEmployeeBtnInsideForm" class="btn">Удалить</button>
         </div>
 
+        <!-- Всплывающее окно для статистики сотрудников -->
+        <div id="statisticsModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3>Статистика сотрудников</h3>
+                <div id="statisticsList">
+                    <table id="statisticsTable">
+                        <thead>
+                            <tr>
+                                <th>Сотрудник</th>
+                                <th>Отработанное время за месяц</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Здесь будут отображаться данные статистики -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица для отслеживания посещаемости -->
         <table id="timeLog">
             <thead>
                 <tr>
@@ -65,22 +86,6 @@
                 <!-- Здесь будут отображаться записи -->
             </tbody>
         </table>
-
-        <!-- Раздел для статистики сотрудников -->
-        <div id="employeeStatistics" style="display: block;">
-            <h2>Статистика по сотрудникам</h2>
-            <table id="statisticsTable">
-                <thead>
-                    <tr>
-                        <th>Сотрудник</th>
-                        <th>Отработанное время за месяц</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Здесь будут отображаться данные статистики -->
-                </tbody>
-            </table>
-        </div>
     </div>
     <script src="src/main.js" type="module"></script>
 </body>

@@ -10,6 +10,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkOutBtnInsideForm').addEventListener('click', checkOut);
     document.getElementById('addEmployeeBtnInsideForm').addEventListener('click', addEmployee);
     document.getElementById('removeEmployeeBtnInsideForm').addEventListener('click', removeEmployee);
+
+    // Показать модальное окно со статистикой
+    document.getElementById('showStatisticsBtn').addEventListener('click', () => {
+        statisticsModal.style.display = 'block';
+        updateStatistics();
+    });
+
+    // Закрыть модальное окно при клике на кнопку закрытия (крестик)
+    document.querySelector('.close-btn').addEventListener('click', () => {
+        document.getElementById('statisticsModal').style.display = 'none';
+    });
+
+    // Закрыть модальное окно при клике вне его содержимого
+    window.addEventListener('click', (event) => {
+        if (event.target === document.getElementById('statisticsModal')) {
+            document.getElementById('statisticsModal').style.display = 'none';
+        }
+    });
 });
 
 const checkInForm = document.getElementById('checkInForm');
