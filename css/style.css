@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Century Gothic";
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -12,6 +12,7 @@ body {
 }
 
 header {
+    font-family: "Century Gothic";
     background: #333;
     color: #fff;
     padding: 10px 0;
@@ -41,6 +42,7 @@ th {
 }
 
 .btn {
+    font-family: "Century Gothic";
     padding: 10px 20px;
     background-color: #5cb85c;
     color: white;
@@ -50,6 +52,7 @@ th {
 }
 
 .btn:hover {
+    font-family: "Century Gothic";
     background-color: #4cae4c;
 }
 
