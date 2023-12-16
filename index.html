@@ -126,10 +126,15 @@
         const checkOutForm = document.getElementById('checkOutForm');
         const addEmployeeForm = document.getElementById('addEmployeeForm');
         const removeEmployeeForm = document.getElementById('removeEmployeeForm')
-        let checkedInEmployees = [];
+        let checkedInEmployees = []; // Массив отмеченных сотрудников
         let allEmployees = []; // Массив всех сотрудников
 
         function promptForCheckIn() {
+            if (allEmployees.length == 0) {
+                alert('Сотрудники отсутствуют. Добавьте сотрудника');
+                return;
+            }
+
             if (checkInForm.style.display == 'block') {
                 checkInForm.style.display = 'none';
                 return;
@@ -149,6 +154,11 @@
         }
 
         function promptForCheckOut() {
+            if (checkedInEmployees.length == 0) {
+                alert('Отмеченные сотрудники отсутствуют.');
+                return;
+            }
+
             if (checkOutForm.style.display == 'block') {
                 checkOutForm.style.display = 'none';
             }
@@ -191,10 +201,15 @@
                     removeEmployeeForm.style.display = 'none';
                 }
                 addEmployeeForm.style.display = 'block';
-            }            
+            }
         }
 
         function promptForRemoveEmployee() {
+            if (allEmployees.length == 0) {
+                alert('Сотрудники отсутствуют. Добавьте сотрудника');
+                return;
+            }
+
             if (removeEmployeeForm.style.display == 'block') {
                 removeEmployeeForm.style.display = 'none';
             }
@@ -228,6 +243,16 @@
             var currentTime = new Date().toLocaleTimeString();
             var currentDate = new Date().toLocaleDateString();
 
+            const rows = timeLog.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                // Проверка ушел ли сотрудник, которого нужно добавить
+                if (row.cells[0].textContent === employeeName && row.cells[3].textContent === "---") {
+                    alert("Данный сотрудник уже есть в таблице");
+                    return;
+                }
+            }
+
             // Добавляем запись в таблицу
             timeLog.innerHTML += '<tr><td>' + employeeName + '</td><td>' + currentDate + '</td><td>' + currentTime + '</td><td>---</td></tr>';
 
@@ -245,10 +270,9 @@
 
             // Находим строку сотрудника и добавляем время ухода
             const rows = timeLog.getElementsByTagName('tr');
-            for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                if (row.cells[0].textContent === employeeNameOut) {
-                    row.cells[3].textContent = currentTime;
+            for (let i = rows.length - 1; i > 0; i--) {
+                if (rows[i].cells[0].textContent === employeeNameOut) {
+                    rows[i].cells[3].textContent = currentTime;
                     break;
                 }
             }
@@ -292,20 +316,23 @@
         function removeEmployee() {
             const select = document.getElementById('employeeToRemove');
             const employeeName = select.value;
+            var timeLog = document.getElementById('timeLog');            
+
+            const rows = timeLog.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                // Проверка ушел ли сотрудник, которого нужно удалить
+                if (row.cells[0].textContent === employeeName && row.cells[3].textContent === "---") {
+                    alert("Данный сотрудник еще не покинул рабочее место");
+                    return;
+                }
+            }
+
             const index = allEmployees.indexOf(employeeName);
             if (index > -1) {
                 allEmployees.splice(index, 1);
                 checkedInEmployees = checkedInEmployees.filter(e => e !== employeeName);
                 updateEmployeeList();
-
-                // Обновляем таблицу (удаляем строку сотрудника)
-                const timeLog = document.getElementById('timeLog');
-                const rows = timeLog.querySelectorAll('tr');
-                rows.forEach(row => {
-                    if (row.cells[0] && row.cells[0].textContent === employeeName) {
-                        timeLog.removeChild(row);
-                    }
-                });
 
                 // Скрываем форму удаления сотрудника
                 removeEmployeeForm.style.display = 'none';
